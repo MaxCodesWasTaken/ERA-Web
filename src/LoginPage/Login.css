@@ -1,0 +1,83 @@
+body {
+    background-color: #121212; /* Dark background for the entire page */
+    color: white; /* Light text color for contrast */
+}
+.logo-container {
+    position: absolute;
+    top: 5%;
+    left: 3%;
+}
+.logo-image {
+    width: 100px; /* Adjust the size as needed */
+    height: 100px; /* Make height equal to width for a perfect circle */
+    border-radius: 50%; /* This makes the image circular */
+    object-fit: cover; /* Ensures the image covers the space, useful for non-square images */
+    border: 2px solid #fff; /* Optional: adds a border around the image */
+    display: block;
+    margin: 0 auto 20px; /* Centers the image and adds space below it */
+}
+.login-container {
+    max-width: 300px;
+    margin: auto;
+    padding: 20px;
+    justify-content: center;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #121212; /* Darker background for the container */
+    color: #ddd; /* Lighter text color for readability */
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    margin-bottom: 5px;
+    color: #ccc; /* Lighter label color */
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 10px 0;
+    border: 1px solid #555; /* Darker border color */
+    background-color: #222; /* Darker background for input */
+    color: #ccc; /* Lighter text color for input */
+    border-radius: 4px;
+}
+
+.login-button {
+    background-color: #333; /* Darker background for the button */
+    color: white; /* Light text color for the button */
+    padding: 10px 20px;
+    border: 1px solid #555; /* Optionally add a border to the button */
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    .login-button:hover {
+        background-color: #565656; /* Darker shade for hover state */
+    }
+
+.bottom-bar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #1a1a1a; /* Even darker shade for the bottom bar */
+    color: #ccc; /* Lighter text color for the bottom bar */
+    text-align: center;
+    padding: 10px 0;
+}
+.error-message {
+    color: red;
+    margin: 10px 0;
+}
