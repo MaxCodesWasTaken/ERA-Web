@@ -5,7 +5,7 @@ function Login({ onLogin }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const handleSubmit = async (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault();
         setError('');  // Clear previous error
         const response = await fetch('http://localhost:5000/api/login', {
@@ -24,14 +24,33 @@ function Login({ onLogin }) {
             setPassword('');  // Optional: Clear password field
         }
     };
+    const handleRegister = async (event) => {
+        event.preventDefault();
+        setError('');  // Clear previous error
+        const response = await fetch('http://localhost:5000/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            onLogin(username, password); // Handle successful login
+        } else {
+            setError('Registration failed: ' + data.message);
+            setPassword('');  // Optional: Clear password field
+        }
+    };
 
     return (
         <div>
             <div className="logo-container">
-                <img src={loginImage} className="logo-image"></img>
+                <img src={loginImage} alt-text="Logo Image" className="logo-image"></img>
             </div>
             <div className="login-container">
-                <form onSubmit={handleSubmit} className="login-form">
+                <form  className="login-form">
                     <h2>Login</h2>
                     <div className="form-group">
                         <label htmlFor="username">Username</label>
@@ -53,7 +72,10 @@ function Login({ onLogin }) {
                             required
                         />
                     </div>
-                    <button type="submit" className="login-button">Log In</button>
+                    <div className="button-container">
+                        <button type="button" onClick={handleLogin} className="login-button">Log In</button>
+                        <button type="button" onClick={handleRegister} className="login-button">Register</button>
+                    </div>
                 </form>
                 <div className="error-message">{error}</div>
             </div>  

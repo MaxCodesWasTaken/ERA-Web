@@ -33,15 +33,17 @@ function Main() {
             let matchesImportance = true;
             if (importance !== 'All Stocks') {
                 if (importance === '3 and above') {
-                    matchesImportance = parseInt(stock.importance) >= 3;
+                    matchesImportance = parseInt(stock.importance, 10) >= 3;
                 } else if (importance === 'Market Movers') {
-                    matchesImportance = parseInt(stock.importance) === 5;
+                    matchesImportance = parseInt(stock.importance, 10) === 5;
                 }
             }
 
             return matchesDate && matchesImportance;
+        }).sort((a, b) => {
+            // Assuming 'importance' is a numeric value
+            return parseInt(b.importance, 10) - parseInt(a.importance, 10);
         });
-
         setFilteredStocks(filtered);
     };
 
@@ -50,9 +52,8 @@ function Main() {
     }, []);
 
     const fetchEarningsCalendar = async () => {
-        const url = "https://api.stocktwits.com/api/2/discover/earnings_calendar";
         try {
-            const response = await fetch(url);
+            const response = await fetch('/api/earnings-calendar');
             const data = await response.json();
             const earnings = data.earnings;
 
@@ -64,6 +65,8 @@ function Main() {
                     allEarningsData.push({ symbol, title, earningsDate, time, importance });
                 }
             }
+            // Sort allEarningsData by importance in descending order
+            allEarningsData.sort((a, b) => parseInt(b.importance, 10) - parseInt(a.importance, 10));
 
             setStocks(allEarningsData);
             setFilteredStocks(allEarningsData);  // Initialize filteredStocks with all stocks
@@ -87,49 +90,48 @@ function Main() {
                 return;
             }
         }
+        try {
+            const response = await fetch(`/api/stock-data?symbol=${symbol}`); // Pass symbol as a query parameter
+            const stockData = await response.json(); // Use response.json() to parse the JSON response
+            const { bidPrice, askPrice, lastSalePrice, volume } = stockData;
+            const change = lastSalePrice - sOCHL.close;
+            const changePercent = (change / sOCHL.close) * 100;
 
-        fetch(`https://api.iex.cloud/v1/data/core/iex_tops/${symbol}?token=pk_5eb2e76ca8544c9ab0b0115b4fbc1f75`)
-            .then(response => response.json())
-            .then(data => {
-                const stockData = data[0] || {}; // Assuming the first object is what we need
-
-                const { bidPrice, askPrice, lastSalePrice, volume } = stockData;
-                const change = lastSalePrice - sOCHL.close;
-                const changePercent = (change / sOCHL.close) * 100;
-
-                setStockDetails({
-                    symbol,
-                    open: sOCHL.open,
-                    close: sOCHL.close,
-                    high: sOCHL.high,
-                    low: sOCHL.low,
-                    bidPrice,
-                    askPrice,
-                    lastSalePrice,
-                    change,
-                    changePercent,
-                    volume,
-                    lastUpdated: new Date().toLocaleString() // Simplified date handling
-                });
-            })
-            .catch(error => {
-                console.error("Failed to retrieve stock data", error);
+            setStockDetails({
+                symbol,
+                open: sOCHL.open,
+                close: sOCHL.close,
+                high: sOCHL.high,
+                low: sOCHL.low,
+                bidPrice,
+                askPrice,
+                lastSalePrice,
+                change,
+                changePercent,
+                volume,
+                lastUpdated: new Date().toLocaleString()
             });
+        } catch (error) {
+            console.error("Failed to retrieve stock data", error);
+        }
     };
     const fetchStockOCHL = async (symbol) => {
-        // Implement fetching of OCHL data for the symbol
-        const uri = `https://api.polygon.io/v2/aggs/ticker/`+symbol+`/prev?adjusted=true&apiKey=kXovlxMMEqF0izpuvLEUUBWlc9KspgpA`;
         try {
-            const response = await fetch(uri);
+            const response = await fetch(`/api/stock-OCHL?symbol=${symbol}`);
             const data = await response.json();
-            const results = data.results[0] || {};
 
-            return {
-                open: results.o,
-                close: results.c,
-                high: results.h,
-                low: results.l
-            };
+            if (response.ok) {
+                return {
+                    open: data.open,
+                    close: data.close,
+                    high: data.high,
+                    low: data.low,
+                    volume: data.volume
+                };
+            } else {
+                console.error('No OCHL data available for', symbol);
+                return null;
+            }
         } catch (error) {
             console.error("Unable to get stock OCHL data for", symbol, error);
             return null;
