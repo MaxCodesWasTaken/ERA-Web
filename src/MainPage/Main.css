@@ -17,6 +17,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-family: 'Arial Rounded MT', Arial
 }
 
     .app-header h1 {
@@ -48,7 +49,21 @@ p {
     max-width: 25%;
     max-height: 90vh;
 }
-
+.sidebar-symbol {
+    font-size: 1.8em;
+    font-weight: bold;
+    font-family: 'Arial Rounded MT', Arial
+}
+.sidebar-title {
+    font-size: 0.6em;
+    padding: 0px, 5px;
+    font-family: 'Arial Rounded MT', Arial
+}
+.sidebar-details {
+    font-size: 0.8em;
+    padding: 0px, 5px;
+    font-family: 'Arial Rounded MT', Arial
+}
 .stock-list-container {
     overflow-y: auto;
     flex-grow: 1;
@@ -157,3 +172,28 @@ p {
         white-space: nowrap;
         flex-shrink: 0; /* Prevents the button from shrinking */
     }
+.info-symbol {
+    font-size: 6em;
+    font-weight: bold;
+    font-family: 'Arial Rounded MT', Arial
+}
+.info-price {
+    font-size: 4em;
+    font-weight: bold;
+    font-family: 'Arial Rounded MT', Arial
+}
+.info-change {
+    font-size: 2em;
+    font-weight: bold;
+    font-family: 'Arial Rounded MT', Arial
+}
+.info-refresh {
+    font-size: 0.6em;
+    font-family: 'Arial Rounded MT', Arial
+}
+.info-details {
+    font-size: 1.2em;
+    font-family: 'Arial Rounded MT', Arial
+}
+
+

@@ -24,7 +24,7 @@ function Main() {
 
     const searchStock = () => {
         console.log('Searching for', searchTerm);
-        // Add search logic here
+        getStock(searchTerm);
     };
 
     const filterResults = () => {
@@ -59,14 +59,14 @@ function Main() {
             const allEarningsData = [];
             for (const date in earnings) {
                 const dateEarnings = earnings[date];
-                const stocks = dateEarnings.stocks;
-                for (const stock of stocks) {
+                for (const stock of dateEarnings.stocks) {
                     const { symbol, title, date: earningsDate, time, importance } = stock;
                     allEarningsData.push({ symbol, title, earningsDate, time, importance });
                 }
             }
 
             setStocks(allEarningsData);
+            setFilteredStocks(allEarningsData);  // Initialize filteredStocks with all stocks
         } catch (error) {
             console.error("Unable to get earnings calendar", error);
         }
@@ -157,11 +157,14 @@ function Main() {
                         <div className="stock-list">
                             {filteredStocks.map((stock, index) => (
                                 <div key={index} className="stock-item" onClick={() => getStock(stock.symbol)}>
-                                    <div>Symbol: {stock.symbol}</div>
-                                    <div>{stock.title}</div>
-                                    <div>Earnings Date: {stock.earningsDate}</div>
-                                    <div>Earnings Time: {stock.time}</div>
-                                    <div>Importance: {stock.importance}</div>
+                                    <div className = "sidebar-symbol">{stock.symbol}</div>
+                                    <div className = "sidebar-title">{stock.title}</div>
+                                    <div className="sidebar-details">
+                                        Earnings: {
+                                            new Date(stock.earningsDate + 'T00:00').toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' })
+                                        } @ {stock.time.length > 5 ? stock.time.slice(0, 5) : stock.time}
+                                    </div>
+                                    <div className="sidebar-details">Importance: {stock.importance}</div>
                                 </div>
                             ))}
                         </div>
@@ -184,21 +187,30 @@ function Main() {
                     <section className="stock-details">
                         {stockDetails ? (
                             <div className="stock-info-container">
-                                <div>Symbol: {stockDetails.symbol}</div>
-                                <div>Open: {stockDetails.open}</div>
-                                <div>Close: {stockDetails.close}</div>
-                                <div>High: {stockDetails.high}</div>
-                                <div>Low: {stockDetails.low}</div>
-                                <div>Last Sale Price: {stockDetails.lastSalePrice}</div>
-                                <div>Change: {stockDetails.change}</div>
-                                <div>Change Percent: {stockDetails.changePercent}%</div>
-                                <div>Bid Price: {stockDetails.bidPrice}</div>
-                                <div>Ask Price: {stockDetails.askPrice}</div>
-                                <div>Volume: {stockDetails.volume}</div>
-                                <div>Last Updated: {stockDetails.lastUpdated}</div>
+                                <div className="info-symbol">{stockDetails.symbol}</div>
+                                <div className="info-price">{Number(stockDetails.lastSalePrice).toFixed(2)}</div>
+                                <div className="info-change">
+                                    <span style={{ color: stockDetails.change > 0 ? 'green' : 'red' }}>
+                                        {(stockDetails.change > 0 ? '+' : '') + Number(stockDetails.change).toFixed(2)} (
+                                    </span>
+                                    <span>
+                                        <span style={{ color: stockDetails.changePercent > 0 ? 'green' : 'red' }}>
+                                            {(stockDetails.changePercent > 0 ? '+' : '') + Number(stockDetails.changePercent).toFixed(2)}%)
+                                        </span>                   
+                                    </span>
+                                </div>
+                                <div className = "info-refresh"> Last Updated: {stockDetails.lastUpdated}</div>
+                                <div className = "info-details">Open: {Number(stockDetails.open).toFixed(2)}</div>
+                                <div className = "info-details">Close: {Number(stockDetails.close).toFixed(2)}</div>
+                                <div className = "info-details">High: {Number(stockDetails.high).toFixed(2)}</div>
+                                <div className = "info-details">Low: {Number(stockDetails.low).toFixed(2)}</div>            
+                                <div className = "info-details">Bid Price: {Number(stockDetails.bidPrice).toFixed(2)}</div>
+                                <div className = "info-details">Ask Price: {Number(stockDetails.askPrice).toFixed(2)}</div>
+                                <div className = "info-details">Volume: {stockDetails.volume}</div>
+                                
                             </div>
                         ) : (
-                            <div>Select a stock to view details.</div>
+                        <div className="info-details">Select a stock to view details.</div>
                         )}
                     </section>
                 </div>

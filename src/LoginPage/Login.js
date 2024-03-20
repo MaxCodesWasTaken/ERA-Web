@@ -28,7 +28,7 @@ function Login({ onLogin }) {
     return (
         <div>
             <div className="logo-container">
-                <img src={loginImage} alt="Login Image" className="logo-image"></img>
+                <img src={loginImage} className="logo-image"></img>
             </div>
             <div className="login-container">
                 <form onSubmit={handleSubmit} className="login-form">
