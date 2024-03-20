@@ -8,6 +8,7 @@ function Main() {
     const [stockDetails, setStockDetails] = useState(null);
     const [noOCHLData, setNoOCHLData] = useState(new Set()); // To track symbols with no OCHL data
     const [checkedStocks, setCheckedStocks] = useState({});
+    const [filteredStocks, setFilteredStocks] = useState([]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -27,17 +28,13 @@ function Main() {
     };
 
     const filterResults = () => {
-        const filteredStocks = stocks.filter(stock => {
-            // Filter by date
+        const filtered = stocks.filter(stock => {
             const matchesDate = stock.earningsDate === date;
-
-            // Filter by importance
             let matchesImportance = true;
             if (importance !== 'All Stocks') {
                 if (importance === '3 and above') {
                     matchesImportance = parseInt(stock.importance) >= 3;
                 } else if (importance === 'Market Movers') {
-                    // Assuming 'Market Movers' is a specific category in your data
                     matchesImportance = parseInt(stock.importance) === 5;
                 }
             }
@@ -45,7 +42,7 @@ function Main() {
             return matchesDate && matchesImportance;
         });
 
-        setStocks(filteredStocks);
+        setFilteredStocks(filtered);
     };
 
     useEffect(() => {
@@ -158,7 +155,7 @@ function Main() {
                 <div className="sidebar">
                     <div className="stock-list-container">
                         <div className="stock-list">
-                            {stocks.map((stock, index) => (
+                            {filteredStocks.map((stock, index) => (
                                 <div key={index} className="stock-item" onClick={() => getStock(stock.symbol)}>
                                     <div>Symbol: {stock.symbol}</div>
                                     <div>{stock.title}</div>
