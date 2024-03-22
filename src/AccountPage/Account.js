@@ -12,7 +12,7 @@ function Account() {
             console.log('User logged out successfully');
             if (response.ok) {
                 localStorage.removeItem('userToken');
-                window.location.href = '/login'; // Adjust the URL based on your routing setup
+                window.location.href = '/'; // Adjust the URL based on your routing setup
             }
         } catch (error) {
             console.error('Logout error:', error);
@@ -29,7 +29,7 @@ function Account() {
     const fetchUserData = async () => {
         try {
             setIsLoading(true);
-            const response = await fetch('/api/user/info'); // Adjust the URL as needed
+            const response = await fetch('http://localhost:5000/api/userinfo', { method: 'GET', credentials: 'include' }); // Adjust the URL as needed
             if (!response.ok) {
                 console.error('No user information was gathered');
                 return null;

@@ -75,7 +75,7 @@ p {
 
 .stock-list {
     display: flex;
-    flex-direction: column, row;
+    flex-direction: column;
 }
 
 .stock-item {

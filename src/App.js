@@ -1,24 +1,29 @@
-import React, { useState } from 'react'; // Import useState here
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import './App.css';
 import Login from './LoginPage/Login';
 import Main from './MainPage/Main';
+import Account from './AccountPage/Account';
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Use the useState hook
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const handleLogin = (username, password) => {
-        // Perform authentication
-        // For demonstration, we'll assume authentication is successful
+    const handleLogin = async () => {
         setIsLoggedIn(true);
-        // In a real app, you would check username and password against a user service or database
+    };
+
+    const ProtectedRoute = ({ children }) => {
+        return isLoggedIn ? children : <Navigate to="/" replace />;
     };
 
     return (
         <Router>
             <Routes>
-                <Route path="/login" element={isLoggedIn ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />} />
-                <Route path="/" element={isLoggedIn ? <Main /> : <Navigate to="/login" replace />} />
+                <Route path="/" element={isLoggedIn ? <Navigate to="/home" replace /> : <Login onLogin={handleLogin} />} />
+                <Route path="/login" element={isLoggedIn ? <Navigate to="/home" replace /> : <Login onLogin={handleLogin} />} />
+                <Route path="/home" element={<ProtectedRoute><Main /></ProtectedRoute>} />
+                <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
+                {/* Add other protected routes similarly */}
             </Routes>
         </Router>
     );

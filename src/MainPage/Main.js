@@ -143,7 +143,7 @@ function Main() {
             console.log('User logged out successfully');
             if (response.ok) {
                 localStorage.removeItem('userToken');
-                window.location.href = '/login'; // Adjust the URL based on your routing setup
+                window.location.href = '/'; // Adjust the URL based on your routing setup
             }
         } catch (error) {
             console.error('Logout error:', error);
