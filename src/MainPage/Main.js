@@ -58,11 +58,14 @@ function Main() {
             const earnings = data.earnings;
 
             const allEarningsData = [];
+            const today = new Date().toISOString().split('T')[0];
             for (const date in earnings) {
-                const dateEarnings = earnings[date];
-                for (const stock of dateEarnings.stocks) {
-                    const { symbol, title, date: earningsDate, time, importance } = stock;
-                    allEarningsData.push({ symbol, title, earningsDate, time, importance });
+                if (date >= today) {
+                    const dateEarnings = earnings[date];
+                    for (const stock of dateEarnings.stocks) {
+                        const { symbol, title, date: earningsDate, time, importance } = stock;
+                        allEarningsData.push({ symbol, title, earningsDate, time, importance });
+                    }
                 }
             }
             // Sort allEarningsData by importance in descending order
@@ -139,11 +142,15 @@ function Main() {
     };
     const handleLogout = async () => {
         try {
-            const response = await fetch('/api/logout');
-            console.log('User logged out successfully');
+            const response = await fetch('http://localhost:5000/api/logout', {
+                method: 'POST' // Specify the method as POST
+            });
             if (response.ok) {
+                console.log('User logged out successfully');
                 localStorage.removeItem('userToken');
-                window.location.href = '/'; // Adjust the URL based on your routing setup
+                navigate('/logout'); // Adjust the URL based on your routing setup
+            } else {
+                console.error('Logout failed with status:', response.status);
             }
         } catch (error) {
             console.error('Logout error:', error);
