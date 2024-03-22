@@ -49,21 +49,25 @@ p {
     max-width: 25%;
     max-height: 90vh;
 }
+
 .sidebar-symbol {
     font-size: 1.8em;
     font-weight: bold;
     font-family: 'Arial Rounded MT', Arial
 }
+
 .sidebar-title {
     font-size: 0.6em;
     padding: 0px, 5px;
     font-family: 'Arial Rounded MT', Arial
 }
+
 .sidebar-details {
     font-size: 0.8em;
     padding: 0px, 5px;
     font-family: 'Arial Rounded MT', Arial
 }
+
 .stock-list-container {
     overflow-y: auto;
     flex-grow: 1;
@@ -71,7 +75,7 @@ p {
 
 .stock-list {
     display: flex;
-    flex-direction: column;
+    flex-direction: column, row;
 }
 
 .stock-item {
@@ -99,7 +103,7 @@ p {
     padding: 8px 12px;
     background-color: #f44336; /* Red color for logout to indicate action */
     color: white;
-    border: none;
+    border: solid;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
@@ -108,6 +112,20 @@ p {
     .logout-button:hover {
         background-color: #d32f2f; /* Darker shade of red on hover */
     }
+
+.account-button {
+    padding: 8px 12px;
+    background-color: #34495e; /* Red color for logout to indicate action */
+    color: white;
+    border: SOLID;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.logout-button:hover {
+    background-color: #d32f2f; /* Darker shade of red on hover */
+}
 
 .bottom-bar {
     position: fixed;
@@ -119,6 +137,7 @@ p {
     text-align: center;
     padding: 10px 0;
 }
+
 .main-content {
     display: flex;
     padding: 20px;
@@ -126,6 +145,7 @@ p {
     height: 100%;
     /* Add any additional styling for your main content area here */
 }
+
 .stock-details {
     background-color: #f2f2f2; /* Light grey background */
     color: black;
@@ -136,9 +156,10 @@ p {
     display: flex;
     flex-direction: column;
 }
+
 .stock-info-container {
     background-color: white; /* Light grey background or any color you prefer */
-    
+
     border-radius: 15px; /* Adjust as necessary for the desired curvature */
     border: 2px solid #2c3e50;
     padding: 20px; /* Space inside the container */
@@ -152,6 +173,7 @@ p {
 .stock-details div {
     margin-bottom: 10px; /* Spacing between each stock info line */
 }
+
 .search-section {
     display: flex;
     align-items: center;
@@ -172,28 +194,31 @@ p {
         white-space: nowrap;
         flex-shrink: 0; /* Prevents the button from shrinking */
     }
+
 .info-symbol {
     font-size: 6em;
     font-weight: bold;
     font-family: 'Arial Rounded MT', Arial
 }
+
 .info-price {
     font-size: 4em;
     font-weight: bold;
     font-family: 'Arial Rounded MT', Arial
 }
+
 .info-change {
     font-size: 2em;
     font-weight: bold;
     font-family: 'Arial Rounded MT', Arial
 }
+
 .info-refresh {
     font-size: 0.6em;
     font-family: 'Arial Rounded MT', Arial
 }
+
 .info-details {
     font-size: 1.2em;
     font-family: 'Arial Rounded MT', Arial
 }
-
-

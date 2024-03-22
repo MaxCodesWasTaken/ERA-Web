@@ -2,11 +2,13 @@ body {
     background-color: #121212; /* Dark background for the entire page */
     color: white; /* Light text color for contrast */
 }
+
 .logo-container {
     position: absolute;
     top: 5%;
     left: 3%;
 }
+
 .logo-image {
     width: 100px; /* Adjust the size as needed */
     height: 100px; /* Make height equal to width for a perfect circle */
@@ -16,6 +18,7 @@ body {
     display: block;
     margin: 0 auto 20px; /* Centers the image and adds space below it */
 }
+
 .login-container {
     max-width: 300px;
     margin: auto;
@@ -53,10 +56,12 @@ input[type="password"] {
     color: #ccc; /* Lighter text color for input */
     border-radius: 4px;
 }
+
 .button-container {
     display: flex;
     justify-content: space-between; /* or 'flex-start' for no space between */
 }
+
 .login-button {
     background-color: #333; /* Darker background for the button */
     color: white; /* Light text color for the button */
@@ -82,6 +87,7 @@ input[type="password"] {
     text-align: center;
     padding: 10px 0;
 }
+
 .error-message {
     color: red;
     margin: 10px 0;

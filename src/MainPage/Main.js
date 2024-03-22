@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'; // Import useEffect here
+import { useNavigate } from 'react-router-dom';
 import './Main.css';
 function Main() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -9,7 +10,7 @@ function Main() {
     const [noOCHLData, setNoOCHLData] = useState(new Set()); // To track symbols with no OCHL data
     const [checkedStocks, setCheckedStocks] = useState({});
     const [filteredStocks, setFilteredStocks] = useState([]);
-
+    const navigate = useNavigate();
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
@@ -23,7 +24,6 @@ function Main() {
     };
 
     const searchStock = () => {
-        console.log('Searching for', searchTerm);
         getStock(searchTerm);
     };
 
@@ -137,12 +137,20 @@ function Main() {
             return null;
         }
     };
-    const handleLogout = () => {
-        // Clear user session/token
-        localStorage.removeItem('userToken'); // Adjust based on where you store your token/session data
-
-        // Redirect to login page or home page
-        window.location.href = '/login'; // Adjust the URL based on your routing setup
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('/api/logout');
+            console.log('User logged out successfully');
+            if (response.ok) {
+                localStorage.removeItem('userToken');
+                window.location.href = '/login'; // Adjust the URL based on your routing setup
+            }
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+    };
+    const handleAccount = () => {
+        navigate('/account');
     };
     return (
 
@@ -150,6 +158,7 @@ function Main() {
             <header className="app-header">
                 <h1>Earnings Report Action</h1>
                 <div className="window-controls">
+                    <button onClick={handleAccount} className="account-button" title="Account">Account</button>
                     <button onClick={handleLogout} className="logout-button" title="Logout">Logout</button>
                 </div>
             </header>
@@ -159,8 +168,8 @@ function Main() {
                         <div className="stock-list">
                             {filteredStocks.map((stock, index) => (
                                 <div key={index} className="stock-item" onClick={() => getStock(stock.symbol)}>
-                                    <div className = "sidebar-symbol">{stock.symbol}</div>
-                                    <div className = "sidebar-title">{stock.title}</div>
+                                    <div className="sidebar-symbol">{stock.symbol}</div>
+                                    <div className="sidebar-title">{stock.title}</div>
                                     <div className="sidebar-details">
                                         Earnings: {
                                             new Date(stock.earningsDate + 'T00:00').toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' })
@@ -198,21 +207,21 @@ function Main() {
                                     <span>
                                         <span style={{ color: stockDetails.changePercent > 0 ? 'green' : 'red' }}>
                                             {(stockDetails.changePercent > 0 ? '+' : '') + Number(stockDetails.changePercent).toFixed(2)}%)
-                                        </span>                   
+                                        </span>
                                     </span>
                                 </div>
-                                <div className = "info-refresh"> Last Updated: {stockDetails.lastUpdated}</div>
-                                <div className = "info-details">Open: {Number(stockDetails.open).toFixed(2)}</div>
-                                <div className = "info-details">Close: {Number(stockDetails.close).toFixed(2)}</div>
-                                <div className = "info-details">High: {Number(stockDetails.high).toFixed(2)}</div>
-                                <div className = "info-details">Low: {Number(stockDetails.low).toFixed(2)}</div>            
-                                <div className = "info-details">Bid Price: {Number(stockDetails.bidPrice).toFixed(2)}</div>
-                                <div className = "info-details">Ask Price: {Number(stockDetails.askPrice).toFixed(2)}</div>
-                                <div className = "info-details">Volume: {stockDetails.volume}</div>
-                                
+                                <div className="info-refresh"> Last Updated: {stockDetails.lastUpdated}</div>
+                                <div className="info-details">Open: {Number(stockDetails.open).toFixed(2)}</div>
+                                <div className="info-details">Close: {Number(stockDetails.close).toFixed(2)}</div>
+                                <div className="info-details">High: {Number(stockDetails.high).toFixed(2)}</div>
+                                <div className="info-details">Low: {Number(stockDetails.low).toFixed(2)}</div>
+                                <div className="info-details">Bid Price: {Number(stockDetails.bidPrice).toFixed(2)}</div>
+                                <div className="info-details">Ask Price: {Number(stockDetails.askPrice).toFixed(2)}</div>
+                                <div className="info-details">Volume: {stockDetails.volume}</div>
+
                             </div>
                         ) : (
-                        <div className="info-details">Select a stock to view details.</div>
+                            <div className="info-details">Select a stock to view details.</div>
                         )}
                     </section>
                 </div>
