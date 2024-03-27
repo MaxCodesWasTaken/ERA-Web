@@ -4,17 +4,21 @@ import loginImage from '../logow.jpg';
 function Login({ onLogin }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
+    const [isError, setIsError] = useState(false);
     const handleLogin = async (event) => {
         event.preventDefault();
-        setError('');  // Clear previous error
+        setMessage('');  // Clear previous error
+        setIsError(false);
         if (username == null || username === '') {
-            console.error('Login error:', error);
-            setError('Username cannot be left blank');
+            console.error('Login error:', message);
+            setMessage('Username cannot be left blank');
+            setIsError(true);
         }
         else if (password == null || password === '') {
-            console.error('Login error:', error);
-            setError('Password cannot be left blank');
+            console.error('Login error:', message);
+            setMessage('Password cannot be left blank');
+            setIsError(true);
         }
         else {
             const response = await fetch('/api/login', {
@@ -29,24 +33,26 @@ function Login({ onLogin }) {
             if (data.success) {
                 onLogin(username, password); // Handle successful login
             } else {
-                setError('Login failed: ' + data.message);
+                setMessage('Login failed: ' + data.message);
+                setIsError(true);
                 setPassword('');  // Optional: Clear password field
             }
         }
     };
     const handleRegister = async (event) => {
         event.preventDefault();
-        setError('');  // Clear previous error
+        setMessage(''); // Clear previous error
         if (username == null || username === '') {
-            console.error('Registration error:', error);
-            setError('Username cannot be left blank');
+            console.error('Registration error:', message);
+            setMessage('Username cannot be left blank');
+            setIsError(true);
         }
         else if (password == null || password === '') {
-            console.error('Registration error:', error);
-            setError('Password cannot be left blank');
+            console.error('Registration error:', message);
+            setMessage('Password cannot be left blank');
+            setIsError(true);
         }
         else {
-            console.log(JSON.stringify({ username, password }));
             const response = await fetch('api/register', {
                 method: 'POST',
                 headers: {
@@ -57,9 +63,11 @@ function Login({ onLogin }) {
 
             const data = await response.json();
             if (data.success) {
-                
+                setMessage('Registration Success!');
+                setIsError(false);
             } else {
-                setError('Registration failed: ' + data.message);
+                setMessage('Registration failed: ' + data.message);
+                setIsError(true);
                 setPassword('');  // Optional: Clear password field
             }
         }
@@ -98,7 +106,7 @@ function Login({ onLogin }) {
                         <button type="button" onClick={handleRegister} className="login-button">Register</button>
                     </div>
                 </form>
-                <div className="error-message">{error}</div>
+                <div className={`message ${isError ? 'error-message' : 'success-message'}`}>{message}</div>
             </div>
             <div className="bottom-bar">
                 Copyright Notice &copy; 2024 Max Wang. All rights reserved.

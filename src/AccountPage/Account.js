@@ -83,6 +83,27 @@ function Account() {
         setIsEditing(!isEditing);
     };
 
+    const deleteAccount = async () => {
+        if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+            const { user: username, firstName, lastName, email } = user;
+            try {
+                const response = await fetch('api/deleteuserinfo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, firstName, lastName, email }),
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to delete user');
+                }
+                handleLogout();
+            } catch (error) {
+                console.error('Failed to delete user error:', error);
+            }
+        }
+    };
+
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
@@ -111,9 +132,12 @@ function Account() {
                             <label htmlFor="email">Email:</label>
                             <input id="email" type="text" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} readOnly={!isEditing} />
                         </div>
-                        <button onClick={isEditing ? handleSave : toggleEdit} className="edit-button">
-                            {isEditing ? 'Submit' : 'Edit'}
-                        </button>
+                        <div className="account-actions">
+                            <button onClick={isEditing ? handleSave : toggleEdit} className="edit-account-button">
+                                {isEditing ? 'Submit Changes' : 'Edit Account'}
+                            </button>
+                            <button onClick={deleteAccount} className="delete-account-button">Delete Account</button>
+                        </div>
                     </div>
                 </div>
                 <div className="bottom-bar">

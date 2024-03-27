@@ -115,6 +115,7 @@ p {
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    font-family: 'Arial Rounded MT', Arial;
 }
 
     .logout-button:hover {
@@ -129,6 +130,7 @@ p {
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    font-family: 'Arial Rounded MT', Arial;
 }
 
 .logout-button:hover {

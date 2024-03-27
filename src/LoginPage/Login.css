@@ -92,3 +92,8 @@ input[type="password"] {
     color: red;
     margin: 10px 0;
 }
+
+.success-message {
+    color: green;
+    margin: 10px 0;
+}
