@@ -77,7 +77,7 @@ function Main() {
             console.error("Unable to get earnings calendar", error);
         }
     };
-    const getStock = async (symbol) => {
+    const getStock = async (symbol, title) => {
         if (noOCHLData.has(symbol)) {
             setStockDetails({ error: `Unable to get OCHL data for ${symbol}` });
             return;
@@ -102,6 +102,7 @@ function Main() {
 
             setStockDetails({
                 symbol,
+                title,
                 open: sOCHL.open,
                 close: sOCHL.close,
                 high: sOCHL.high,
@@ -174,7 +175,7 @@ function Main() {
                     <div className="stock-list-container">
                         <div className="stock-list">
                             {filteredStocks.map((stock, index) => (
-                                <div key={index} className="stock-item" onClick={() => getStock(stock.symbol)}>
+                                <div key={index} className="stock-item" onClick={() => getStock(stock.symbol, stock.title)}>
                                     <div className="sidebar-symbol">{stock.symbol}</div>
                                     <div className="sidebar-title">{stock.title}</div>
                                     <div className="sidebar-details">
@@ -206,6 +207,7 @@ function Main() {
                         {stockDetails ? (
                             <div className="stock-info-container">
                                 <div className="info-symbol">{stockDetails.symbol}</div>
+                                <div className="info-details">{stockDetails.title}</div>
                                 <div className="info-price">{Number(stockDetails.lastSalePrice).toFixed(2)}</div>
                                 <div className="info-change">
                                     <span style={{ color: stockDetails.change > 0 ? 'green' : 'red' }}>
@@ -228,7 +230,7 @@ function Main() {
 
                             </div>
                         ) : (
-                            <div className="info-details">Select a stock to view details.</div>
+                            <div className="info-default">a </div>
                         )}
                     </section>
                 </div>

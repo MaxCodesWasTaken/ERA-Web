@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
-import loginImage from '../logo.jpg';
+import loginImage from '../logow.jpg';
 function Login({ onLogin }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -47,7 +47,7 @@ function Login({ onLogin }) {
         }
         else {
             console.log(JSON.stringify({ username, password }));
-            const response = await fetch('http://localhost:5000/api/register', {
+            const response = await fetch('api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ function Login({ onLogin }) {
 
             const data = await response.json();
             if (data.success) {
-                onLogin(username, password); // Handle successful login
+                
             } else {
                 setError('Registration failed: ' + data.message);
                 setPassword('');  // Optional: Clear password field

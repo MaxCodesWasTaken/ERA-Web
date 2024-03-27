@@ -8,6 +8,7 @@
 .app-container {
     display: flex;
     min-height: 90vh;
+    background-color: #34495e;
 }
 
 .app-header {
@@ -35,8 +36,15 @@ p {
 }
 
 .main-content {
-    display: flex;
-    flex-grow: 1;
+    display: flex; /* Flex container to manage children */
+    flex-direction: column; /* Stack children vertically */
+    align-items: stretch; /* Stretch children width-wise */
+    width: 100%; /* Take full width of the container */
+    margin-top: 0; /* Ensure no margin at the top */
+    padding-top: 20px; /* Or adjust as needed for your design */
+    background-color: #34495e;
+    padding-right: 20px;
+    padding-left: 20px;
 }
 
 .sidebar {
@@ -135,24 +143,18 @@ p {
     background-color: #2c3e50; /* Or any color you prefer */
     color: white;
     text-align: center;
-    padding: 10px 0;
+    padding: 2px 0;
+    font-size: 0.5em;
+    font-weight: bold;
+    font-family: 'Arial Rounded MT', Arial;
 }
 
-.main-content {
-    display: flex;
-    padding: 20px;
-    flex-direction: column;
-    height: 100%;
-    /* Add any additional styling for your main content area here */
-}
+
 
 .stock-details {
-    background-color: #f2f2f2; /* Light grey background */
+    background-color: white; /* Light grey background */
     color: black;
     border-radius: 15px; /* Rounded corners for the box */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
-    padding: 20px;
-    margin-top: 20px; /* If needed to add space between sections */
     display: flex;
     flex-direction: column;
 }
@@ -161,10 +163,8 @@ p {
     background-color: white; /* Light grey background or any color you prefer */
 
     border-radius: 15px; /* Adjust as necessary for the desired curvature */
-    border: 2px solid #2c3e50;
-    padding: 20px; /* Space inside the container */
-    margin-top: 20px; /* Space between the search button and the container */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for depth */
+    padding: 20px 0px 0px 20px; /* Space inside the container */
+    margin-top: 0px; /* Space between the search button and the container */
     display: flex;
     flex-direction: column;
     align-items: flex-start; /* Aligns stock info to the left */
@@ -221,4 +221,11 @@ p {
 .info-details {
     font-size: 1.2em;
     font-family: 'Arial Rounded MT', Arial
+}
+
+.info-default {
+    font-size: 29em;
+    font-family: 'Arial Rounded MT', Arial;
+    align-content: center;
+    color: white;
 }
