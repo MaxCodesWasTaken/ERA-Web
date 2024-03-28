@@ -11,6 +11,7 @@
     min-height: 90vh;
     align-items: center;
     justify-content: center;
+    background-color: #34495e;
     flex: 1;
 }
 
@@ -26,6 +27,13 @@
     .portfolio-header h1 {
         margin: 0;
     }
+.portfolio-content {
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    height: 100%;
+    /* Add any additional styling for your main content area here */
+}
 
 .logout-button {
     padding: 8px 12px;

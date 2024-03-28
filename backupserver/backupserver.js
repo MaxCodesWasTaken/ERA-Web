@@ -83,8 +83,7 @@ app.post('/api/register', async (req, res) => {
         console.error('Registration error:  Password cannot be left blank');
         res.status(500).json({ success: false, message: 'Password cannot be left blank' });
     }
-    const saltRounds = 10; // Define salt rounds for bcrypt
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS);
     // Save username and hashedPassword to the database
     // Assuming you have a function to save the user to your database
     try {
@@ -156,6 +155,24 @@ app.get('/api/userinfo', async (req, res) => {
     }
 });
 
+app.get('/api/useralpacainfo', async (req, res) => {
+    if (!req.session || !req.session.userId) {
+        return res.status(401).json({ success: false, message: 'Not authenticated' });
+    }
+
+    try {
+        const userInfo = await getUserAlpacaInfoFromDatabase(req.session.userId);
+        if (userInfo) {
+            res.json(userInfo);
+        } else {
+            res.status(404).json({ success: false, message: 'User information not found' });
+        }
+    } catch (error) {
+        console.error("Unable to get user info:", error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.post('/api/edituserinfo', async (req, res) => {
     const { username, firstName, lastName, email } = req.body;
     if (!req.session || !req.session.userId) {
@@ -163,6 +180,23 @@ app.post('/api/edituserinfo', async (req, res) => {
     }
     try {
         await saveUserInfoToDatabase(req.session.userId, firstName, lastName, email);
+        res.json({ success: true, message: 'edit successful' });
+    }
+    catch (error) {
+        console.error('Error editing user info:', error);
+        res.status(500).json({ success: false, message: 'Error editing user info' });
+    }
+});
+
+app.post('/api/edituseralpacainfo', async (req, res) => {
+    const { username, apikey, apikeysecret } = req.body;
+    const hashedapikey = await bcrypt.hash(apikey, process.env.SALT_ROUNDS);
+    const hashedapikeysecret = await bcrypt.hash(apikeysecret, process.env.SALT_ROUNDS);
+    if (!req.session || !req.session.userId) {
+        return res.status(401).json({ success: false, message: 'Not authenticated' });
+    }
+    try {
+        await saveUserAlpacaInfoToDatabase(req.session.userId, hashedapikey, hashedapikeysecret);
         res.json({ success: true, message: 'edit successful' });
     }
     catch (error) {
@@ -267,6 +301,8 @@ const saveUserToDatabase = async (username, hashedPassword) => {
     const createLoginQuery = `
         INSERT INTO users (username, hashed_password, firstname, lastname, email)
         VALUES ($1, $2, ' ', ' ', ' ')
+        INSERT INTO usersalpacainfo (username, hashedapikey, hashedapikeysecret)
+        VALUES ($1, ' ', ' ')
     `;
 
     try {
@@ -296,6 +332,23 @@ const saveUserInfoToDatabase = async (userid, firstname, lastname, email) => {
     }
 };
 
+const saveUserAlpacaInfoToDatabase = async (userid, hashedapikey, hashedapikeysecret) => {
+    const createAccountQuery = `
+        UPDATE usersalpacainfo
+        SET hashedapikey = $2, hashedapikeysecret = $3
+        WHERE id = $1
+     `;
+    try {
+        // Using the pool to query the database
+        await pool.query(createAccountQuery, [userid, hashedapikey, hashedapikeysecret]);
+        //console.log('User info saved!');
+        return;
+    } catch (error) {
+        console.error('Error saving user info to database:', error);
+        throw error; // Rethrow the error or handle it as needed
+    }
+};
+
 const getUserInfoFromDatabase = async (userId) => {
     try {
         const result = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
@@ -305,10 +358,23 @@ const getUserInfoFromDatabase = async (userId) => {
         throw error;
     }
 }
+const getUserAlpacaInfoFromDatabase = async (userId) => {
+    try {
+        const result = await pool.query('SELECT * FROM usersalpacainfo WHERE id = $1', [userId]);
+        return result.rows[0]; // Assuming the first row contains the user info
+    } catch (error) {
+        console.error('Database error in getUserAlpacaInfoFromDatabase:', error);
+        throw error;
+    }
+}
 
 const deleteUserFromDatabase = async (userId) => {
+    const deleteAccountQuery = `
+        DELETE FROM users WHERE id = $1
+        DELETE FROM usersalpacainfo WHERE id = $1
+     `;
     try {
-        const result = await pool.query('DELETE FROM users WHERE id = $1', [userId]);
+        const result = await pool.query(deleteAccountQuery, [userId]);
         return result.rows[0]; // Assuming the first row contains the user info
     } catch (error) {
         console.error('Database error in deleteUserInfoFromDatabase:', error);

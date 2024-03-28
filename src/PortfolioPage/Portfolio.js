@@ -72,6 +72,14 @@ function Portfolio() {
                     <button onClick={handleLogout} className="logout-button">Logout</button>
                 </div>
             </header>
+            <div className="portfolio-container">
+                <div className="portfolio-content">
+
+                </div>
+                <div className="bottom-bar">
+                    Copyright Notice &copy; 2024 Max Wang. All rights reserved.
+                </div>
+            </div>
         </div>
     );
 }
