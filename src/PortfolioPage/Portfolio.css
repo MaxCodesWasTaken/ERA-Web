@@ -1,0 +1,68 @@
+.Portfolio {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.portfolio-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.portfolio-header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Arial Rounded MT', Arial;
+}
+    .portfolio-header h1 {
+        margin: 0;
+    }
+
+.logout-button {
+    padding: 8px 12px;
+    background-color: #f44336; /* Red color for logout to indicate action */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Arial Rounded MT', Arial;
+}
+
+    .logout-button:hover {
+        background-color: #d32f2f; /* Darker shade of red on hover */
+    }
+.home-button {
+    padding: 8px 12px;
+    background-color: #34495e; /* Red color for logout to indicate action */
+    color: white;
+    border: SOLID;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Arial Rounded MT', Arial;
+}
+
+    .home-button:hover {
+        background-color: #d32f2f; /* Darker shade of red on hover */
+    }
+
+.account-button {
+    padding: 8px 12px;
+    background-color: #34495e; /* Red color for logout to indicate action */
+    color: white;
+    border: SOLID;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Arial Rounded MT', Arial;
+}

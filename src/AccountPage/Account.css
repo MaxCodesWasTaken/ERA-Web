@@ -111,6 +111,18 @@
     .home-button:hover {
         background-color: #d32f2f; /* Darker shade of red on hover */
     }
+
+.portfolio-button {
+    padding: 8px 12px;
+    background-color: #34495e; /* Red color for logout to indicate action */
+    color: white;
+    border: SOLID;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Arial Rounded MT', Arial;
+}
+
 .account-actions {
     align-self: center; /* Center the button within its parent */
     margin-top: auto;

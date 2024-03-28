@@ -158,14 +158,59 @@ function Main() {
         }
     };
     const handleAccount = () => {
-        navigate('/account');
+        fetch('/api/account', {
+            method: 'GET',
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();  // parse the JSON data from the response
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            })
+            .then(data => {
+                if (data.success) {
+                    navigate(data.message);
+                } else {
+                    navigate('/');
+                }
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+                navigate('/');
+            });
     };
+
+    const handlePortfolio = () => {
+        fetch('/api/portfolio', {
+            method: 'GET',
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();  // parse the JSON data from the response
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            })
+            .then(data => {
+                if (data.success) {
+                    navigate(data.message);
+                } else {
+                    navigate('/');
+                }
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+                navigate('/');
+            });
+    }
     return (
 
         <div className="App">
             <header className="app-header">
                 <h1>Earnings Report Action</h1>
                 <div className="window-controls">
+                    <button onClick={handlePortfolio} className="portfolio-button" title="Portfolio">Portfolio</button>
                     <button onClick={handleAccount} className="account-button" title="Account">Account</button>
                     <button onClick={handleLogout} className="logout-button" title="Logout">Logout</button>
                 </div>
