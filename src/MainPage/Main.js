@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'; // Import useEffect here
 import { useNavigate } from 'react-router-dom';
 import './Main.css';
+import handlePortfolio from '../Navigation/handlePortfolio';
+import handleAccount from '../Navigation/handleAccount';
+import handleLogout from '../Navigation/handleLogout';
 function Main() {
     const [searchTerm, setSearchTerm] = useState('');
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]); // Current date in YYYY-MM-DD format
@@ -141,78 +144,16 @@ function Main() {
             return null;
         }
     };
-    const handleLogout = async () => {
-        try {
-            const response = await fetch('http://localhost:5000/api/logout', {
-                method: 'POST' // Specify the method as POST
-            });
-            if (response.ok) {
-                console.log('User logged out successfully');
-                localStorage.removeItem('userToken');
-                navigate('/logout'); // Adjust the URL based on your routing setup
-            } else {
-                console.error('Logout failed with status:', response.status);
-            }
-        } catch (error) {
-            console.error('Logout error:', error);
-        }
-    };
-    const handleAccount = () => {
-        fetch('/api/account', {
-            method: 'GET',
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();  // parse the JSON data from the response
-                } else {
-                    throw new Error('Network response was not ok.');
-                }
-            })
-            .then(data => {
-                if (data.success) {
-                    navigate(data.message);
-                } else {
-                    navigate('/');
-                }
-            })
-            .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
-                navigate('/');
-            });
-    };
 
-    const handlePortfolio = () => {
-        fetch('/api/portfolio', {
-            method: 'GET',
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();  // parse the JSON data from the response
-                } else {
-                    throw new Error('Network response was not ok.');
-                }
-            })
-            .then(data => {
-                if (data.success) {
-                    navigate(data.message);
-                } else {
-                    navigate('/');
-                }
-            })
-            .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
-                navigate('/');
-            });
-    }
     return (
 
         <div className="App">
             <header className="app-header">
                 <h1>Earnings Report Action</h1>
                 <div className="window-controls">
-                    <button onClick={handlePortfolio} className="portfolio-button" title="Portfolio">Portfolio</button>
-                    <button onClick={handleAccount} className="account-button" title="Account">Account</button>
-                    <button onClick={handleLogout} className="logout-button" title="Logout">Logout</button>
+                    <button onClick={() => handlePortfolio(navigate)} className="portfolio-button" title="Portfolio">Portfolio</button>
+                    <button onClick={() => handleAccount(navigate)} className="account-button" title="Account">Account</button>
+                    <button onClick={() => handleLogout(navigate)} className="logout-button">Logout</button>
                 </div>
             </header>
             <div className="app-container">
