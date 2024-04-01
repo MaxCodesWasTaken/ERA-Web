@@ -9,6 +9,7 @@
     display: flex;
     min-height: 90vh;
     background-color: #34495e;
+
 }
 
 .app-header {
@@ -18,7 +19,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: 'Arial Rounded MT', Arial
+    font-family: 'Arial Rounded MT', Arial;
+    border-bottom: solid;
 }
 
     .app-header h1 {
@@ -56,6 +58,7 @@ p {
     padding: 10px;
     max-width: 25%;
     max-height: 90vh;
+    border-right: solid;
 }
 
 .sidebar-symbol {
@@ -124,7 +127,7 @@ p {
 
 .account-button {
     padding: 8px 12px;
-    background-color: #34495e; /* Red color for logout to indicate action */
+    background-color: #34495e; 
     color: white;
     border: SOLID;
     border-radius: 4px;
@@ -135,7 +138,7 @@ p {
 
 .portfolio-button {
     padding: 8px 12px;
-    background-color: #34495e; /* Red color for logout to indicate action */
+    background-color: #34495e; 
     color: white;
     border: SOLID;
     border-radius: 4px;
@@ -194,12 +197,22 @@ p {
     .search-section input[type="text"],
     .search-section button {
         padding: 10px;
-        border: 1px solid #ccc;
+        border: 2px solid #ccc;
         border-radius: 4px;
+        font-size: 12px;
+        font-family: 'Arial Rounded MT', Arial;
     }
 
     /* Ensure the button doesn't grow wider than its content */
     .search-section button {
+        padding: 10px 12px;
+        background-color: #34495e; /* Red color for logout to indicate action */
+        color: white;
+        border: SOLID;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: 'Arial Rounded MT', Arial;
         white-space: nowrap;
         flex-shrink: 0; /* Prevents the button from shrinking */
     }

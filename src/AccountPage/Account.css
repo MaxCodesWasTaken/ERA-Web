@@ -24,6 +24,7 @@
     justify-content: space-between;
     align-items: center;
     font-family: 'Arial Rounded MT', Arial;
+    border-bottom: solid;
 }
 
     .account-header h1 {

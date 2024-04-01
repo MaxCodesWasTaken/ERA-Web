@@ -6,7 +6,10 @@ import handleAccount from '../Navigation/handleAccount';
 import handleLogout from '../Navigation/handleLogout';
 function Portfolio() {
     const navigate = useNavigate();
-
+    const handleSidebarNavigation = (category) => {
+        console.log(`${category} clicked`); // Placeholder action
+        // navigate(`/${category.toLowerCase()}`); // Uncomment and modify as needed
+    };
     return (
         <div className="Portfolio">
             <header className="portfolio-header">
@@ -18,6 +21,14 @@ function Portfolio() {
                 </div>
             </header>
             <div className="portfolio-container">
+                <div className="portfolio-sidebar">
+                    <div className="portfolio-sidebar-list">
+                        <button onClick={() => handleSidebarNavigation('Positions')} className="portfolio-sidebar-button">Positions</button>
+                        <button onClick={() => handleSidebarNavigation('Orders')} className="portfolio-sidebar-button">Orders</button>
+                        <button onClick={() => handleSidebarNavigation('Activities')} className="portfolio-sidebar-button">Activities</button>
+                        <button onClick={() => handleSidebarNavigation('Balances')} className="portfolio-sidebar-button">Balances</button>
+                    </div>
+                </div>
                 <div className="portfolio-content">
 
                 </div>

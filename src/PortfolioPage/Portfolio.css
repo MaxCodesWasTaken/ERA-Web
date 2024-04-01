@@ -9,8 +9,6 @@
     display: flex;
     flex-direction: column;
     min-height: 90vh;
-    align-items: center;
-    justify-content: center;
     background-color: #34495e;
     flex: 1;
 }
@@ -23,16 +21,22 @@
     justify-content: space-between;
     align-items: center;
     font-family: 'Arial Rounded MT', Arial;
+    border-bottom: solid;
 }
     .portfolio-header h1 {
         margin: 0;
     }
+
 .portfolio-content {
-    display: flex;
-    padding: 20px;
-    flex-direction: column;
-    height: 100%;
-    /* Add any additional styling for your main content area here */
+    display: flex; /* Flex container to manage children */
+    flex-direction: column; /* Stack children vertically */
+    align-items: stretch; /* Stretch children width-wise */
+    width: 100%; /* Take full width of the container */
+    margin-top: 0; /* Ensure no margin at the top */
+    padding-top: 20px; /* Or adjust as needed for your design */
+    background-color: #34495e;
+    padding-right: 20px;
+    padding-left: 20px;
 }
 
 .logout-button {
@@ -74,3 +78,42 @@
     font-size: 16px;
     font-family: 'Arial Rounded MT', Arial;
 }
+
+.portfolio-sidebar {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 30px;
+    background-color: #546e7a;
+    color: white;
+    padding: 10px;
+    max-width: 10%;
+    max-height: 90vh;
+    min-height: 90vh;
+    border-right: solid;
+}
+
+
+.portfolio-sidebar-container {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.portfolio-sidebar-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.portfolio-sidebar-button {
+    background-color: white;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: 'Arial Rounded MT', Arial
+}
+
+    .stock-item:hover {
+        background-color: #546e7a;
+    }

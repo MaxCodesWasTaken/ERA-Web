@@ -23,7 +23,7 @@ function Account() {
     const fetchUserData = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch('http://localhost:5000/api/userinfo', { method: 'GET', credentials: 'include' });
+            const response = await fetch('api/userinfo', { method: 'GET', credentials: 'include' });
             if (!response.ok) {
                 throw new Error('Failed to fetch user data');
             }
