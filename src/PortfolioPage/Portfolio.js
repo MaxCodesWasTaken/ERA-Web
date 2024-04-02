@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // Import useEffect here
+import React from 'react'; // Import useEffect here
 import { useNavigate } from 'react-router-dom';
 import './Portfolio.css';
 import handleMain from '../Navigation/handleMain';
@@ -7,8 +7,19 @@ import handleLogout from '../Navigation/handleLogout';
 function Portfolio() {
     const navigate = useNavigate();
     const handleSidebarNavigation = (category) => {
-        console.log(`${category} clicked`); // Placeholder action
-        // navigate(`/${category.toLowerCase()}`); // Uncomment and modify as needed
+        if (category === 'Positions') {
+
+        }
+        else if (category === 'Orders') {
+
+        }
+        else if (category === 'Activities') {
+
+        }
+        else if (category === 'Balances') {
+
+        }
+        else;
     };
     return (
         <div className="Portfolio">
@@ -30,7 +41,9 @@ function Portfolio() {
                     </div>
                 </div>
                 <div className="portfolio-content">
+                    <section className="portfolio-details">
 
+                    </section>
                 </div>
                 <div className="bottom-bar">
                     Copyright Notice &copy; 2024 Max Wang. All rights reserved.
