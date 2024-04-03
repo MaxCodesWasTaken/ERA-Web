@@ -53,7 +53,20 @@
     .home-button:hover {
         background-color: #d32f2f; /* Darker shade of red on hover */
     }
+.submit-button {
+    padding: 8px 12px;
+    background-color: #34495e; /* Red color for logout to indicate action */
+    color: white;
+    border: SOLID;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Arial Rounded MT', Arial;
+}
 
+    .home-button:hover {
+        background-color: #d32f2f; /* Darker shade of red on hover */
+    }
 .bottom-bar {
     position: fixed;
     left: 0;
@@ -138,4 +151,65 @@
     display: flex;
     flex-direction: column;
     justify-content: center; /* Center content vertically, if needed */
+}
+
+.portfolio-content-header {
+    flex: 1;
+    border-radius: 15px; /* Rounded corners */
+    border: solid;
+    border-width: 2px;
+    border-color: #2c3e50;
+    margin: 0.5%;
+}
+.portfolio-account-name {
+    padding: 10px;
+    font-size: 0.2em;
+    font-family: 'Arial Rounded MT', Arial;
+    color: black;
+}
+.portfolio-details {
+    flex: 9;
+    display: flex;
+    flex-direction: row;
+}
+.portfolio-alpaca-accinfo {
+    flex: 2; /* Don't grow or shrink */
+    width: 40%; /* Full width minus margin */
+    background-color: white;
+    border-radius: 15px; /* Rounded corners */
+    border: solid;
+    border-width: 2px;
+    border-color: #2c3e50;
+    margin: 0.5%; /* Space around the container */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically, if needed */
+}
+.portfolio-alpaca-keyinfo {
+    flex: 1; /* Don't grow or shrink */
+    width: 40%; /* Full width minus margin */
+    background-color: lightyellow;
+    border-radius: 15px; /* Rounded corners */
+    border: solid;
+    border-width: 2px;
+    border-color: #2c3e50;
+    margin: 0.5%; /* Space around the container */
+    padding: 20px, 20px, 20px, 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically, if needed */
+}
+.portfolio-key-form{
+    padding: 20px 20px 0px 20px;
+}
+
+.portfolio-key-form-label {
+    font-size: 1.5em;
+    font-family: 'Arial Rounded MT', Arial;
+    color: black;
+}
+.portfolio-key-form-input {
+    padding: 20px;
+    font-size: 0.6em;
+    font-family: 'Arial Rounded MT', Arial;
 }
