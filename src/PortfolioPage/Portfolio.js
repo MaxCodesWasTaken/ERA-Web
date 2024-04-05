@@ -1,9 +1,10 @@
-import React, { useEffect, useState} from 'react'; // Import useEffect here
+import React, { useEffect, useState, useCallback} from 'react'; // Import useEffect here
 import { useNavigate } from 'react-router-dom';
 import './Portfolio.css';
 import handleMain from '../Navigation/handleMain';
 import handleAccount from '../Navigation/handleAccount';
 import handleLogout from '../Navigation/handleLogout';
+import alpacaLogo from './alpaca.png';
 function Portfolio() {
     const navigate = useNavigate();
     const [alpacaUserCreds, setAlpacaUserCreds] = useState({
@@ -19,11 +20,7 @@ function Portfolio() {
     });
     const [alpacaAccountFound, setAlpacaAccountFound] = useState({});
 
-    useEffect(() => {
-        fetchAlpacaAccount();
-    });
-
-    const fetchAlpacaAccount = async () => {
+    const fetchAlpacaAccount = useCallback(async () => {
         try {
             const response = await fetch("/api/useralpacainfo");
             if (!response.ok) {
@@ -31,7 +28,6 @@ function Portfolio() {
             }
             const data = await response.json();
             setAlpacaUser({
-                ...alpacaUser,
                 userid: data.userid, // Assuming 'user' is the field you want, adjust if the API provides a different field name
                 account_number: data.account_number,
                 buying_power: data.buying_power,
@@ -42,8 +38,10 @@ function Portfolio() {
             console.error("No Alpaca account information on record", error);
             setAlpacaAccountFound(false);
         }
-    };
-
+    }, []);
+    useEffect(() => {
+        fetchAlpacaAccount();
+    }, [fetchAlpacaAccount]);
     const handleSidebarNavigation = (category) => {
         if (category === 'Positions') {
 
@@ -120,31 +118,40 @@ function Portfolio() {
                     </section>
                     <section className="portfolio-details">
                         <div className="portfolio-alpaca-accinfo">
+                            <div className="portfolio-account-buyingpower">Buying Power: {alpacaUser.buying_power}</div>
                         </div>
-                        <div className="portfolio-alpaca-keyinfo">
-                            <form className= "portfolio-key-form" onSubmit={handleSubmit}>
-                                <label className="portfolio-key-form-label">
-                                    API Key:
-                                    <input className="portfolio-key-form-input"
-                                        type="text"
-                                        name="key"
-                                        value={alpacaUserCreds.key}
-                                        onChange={handleInputChange}
-                                    />
-                                </label>
-                                <label className="portfolio-key-form-label">
-                                    API Secret:
-                                    <input className= "portfolio-key-form-input"
-                                        type="password"
-                                        name="secret"
-                                        value={alpacaUserCreds.secret}
-                                        onChange={handleInputChange}
-                                    />
-                                </label>
-                                <button type="submit" className="submit-button">Submit</button>
-                            </form>
-                        </div>
+                        {alpacaAccountFound ? (
+                            <div className="portfolio-alpaca-keyinfo">
+                                <img src={alpacaLogo} alt="Alpaca Logo" className="alpaca-logo" />
+                                <div className="portfolio-alpaca-linked">Your Alpaca account is linked!</div>
+                            </div>
+                        ) : (
+                            <div className="portfolio-alpaca-keyinfo">
+                                <form className="portfolio-key-form" onSubmit={handleSubmit}>
+                                    <label className="portfolio-key-form-label">
+                                        API Key:
+                                        <input className="portfolio-key-form-input"
+                                            type="text"
+                                            name="key"
+                                            value={alpacaUserCreds.key}
+                                            onChange={handleInputChange}
+                                        />
+                                    </label>
+                                    <label className="portfolio-key-form-label">
+                                        API Secret:
+                                        <input className="portfolio-key-form-input"
+                                            type="password"
+                                            name="secret"
+                                            value={alpacaUserCreds.secret}
+                                            onChange={handleInputChange}
+                                        />
+                                    </label>
+                                    <button type="submit" className="submit-button">Submit</button>
+                                </form>
+                            </div>
+                        )}
                     </section>
+
                 </div>
                 <div className="bottom-bar">
                     Copyright Notice &copy; 2024 Max Wang. All rights reserved.

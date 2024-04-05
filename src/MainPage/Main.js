@@ -33,6 +33,7 @@ function Main() {
     const filterResults = () => {
         const filtered = stocks.filter(stock => {
             const matchesDate = stock.earningsDate === date;
+            console.log(date);
             let matchesImportance = true;
             if (importance !== 'All Stocks') {
                 if (importance === '3 and above') {
@@ -61,15 +62,13 @@ function Main() {
             const earnings = data.earnings;
 
             const allEarningsData = [];
-            const today = new Date().toISOString().split('T')[0];
-            for (const date in earnings) {
-                if (date >= today) {
-                    const dateEarnings = earnings[date];
-                    for (const stock of dateEarnings.stocks) {
-                        const { symbol, title, date: earningsDate, time, importance } = stock;
-                        allEarningsData.push({ symbol, title, earningsDate, time, importance });
-                    }
+            for (const date in earnings) {     
+                const dateEarnings = earnings[date];
+                for (const stock of dateEarnings.stocks) {
+                    const { symbol, title, date: earningsDate, time, importance } = stock;
+                    allEarningsData.push({ symbol, title, earningsDate, time, importance });
                 }
+
             }
             // Sort allEarningsData by importance in descending order
             allEarningsData.sort((a, b) => parseInt(b.importance, 10) - parseInt(a.importance, 10));

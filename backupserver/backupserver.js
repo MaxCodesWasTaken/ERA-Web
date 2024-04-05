@@ -4,6 +4,7 @@ const cors = require('cors');
 const app = express();
 const axios = require('axios');
 const PORT = 5000;
+const Alpaca = require("@alpacahq/alpaca-trade-api");
 const session = require('express-session');
 const ConnectPgSimple = require('connect-pg-simple')(session);
 const { Pool } = require('pg');
@@ -83,7 +84,7 @@ app.post('/api/register', async (req, res) => {
         console.error('Registration error:  Password cannot be left blank');
         res.status(500).json({ success: false, message: 'Password cannot be left blank' });
     }
-    const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS);
+    const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT_ROUNDS));
     // Save username and hashedPassword to the database
     // Assuming you have a function to save the user to your database
     try {
@@ -163,7 +164,28 @@ app.get('/api/useralpacainfo', async (req, res) => {
     try {
         const userInfo = await getUserAlpacaInfoFromDatabase(req.session.userId);
         if (userInfo) {
-            res.json(userInfo);
+            const options = {
+                method: 'GET',
+                url: 'https://paper-api.alpaca.markets/v2/account',
+                headers: {
+                    accept: 'application/json',
+                    'APCA-API-KEY-ID': userInfo.apikey,
+                    'APCA-API-SECRET-KEY': userInfo.apikeysecret
+                }
+            };
+
+            try {
+                const response = await axios.request(options);
+                // Check if the request was successful (status code 200)
+                if (response.status !== 200) {
+                    throw new Error("Unable to connect to Alpaca account");
+                } else {
+                    res.json(response.data); // Send the actual account data in the response
+                }
+            } catch (error) {
+                console.error('Error fetching account information:', error);
+                res.status(500).json({ error: 'Error fetching account information' });
+            }
         } else {
             res.status(404).json({ success: false, message: 'User information not found' });
         }
@@ -189,14 +211,12 @@ app.post('/api/edituserinfo', async (req, res) => {
 });
 
 app.post('/api/edituseralpacainfo', async (req, res) => {
-    const { username, apikey, apikeysecret } = req.body;
-    const hashedapikey = await bcrypt.hash(apikey, process.env.SALT_ROUNDS);
-    const hashedapikeysecret = await bcrypt.hash(apikeysecret, process.env.SALT_ROUNDS);
+    const { apikey, apikeysecret } = req.body;
     if (!req.session || !req.session.userId) {
         return res.status(401).json({ success: false, message: 'Not authenticated' });
     }
     try {
-        await saveUserAlpacaInfoToDatabase(req.session.userId, hashedapikey, hashedapikeysecret);
+        await saveUserAlpacaInfoToDatabase(req.session.userId, apikey, apikeysecret);
         res.json({ success: true, message: 'edit successful' });
     }
     catch (error) {
@@ -301,14 +321,18 @@ const saveUserToDatabase = async (username, hashedPassword) => {
     const createLoginQuery = `
         INSERT INTO users (username, hashed_password, firstname, lastname, email)
         VALUES ($1, $2, ' ', ' ', ' ')
-        INSERT INTO usersalpacainfo (username, hashedapikey, hashedapikeysecret)
-        VALUES ($1, ' ', ' ')
+        RETURNING id;
     `;
-
+    const createAlpacaAccountQuery = `
+        INSERT INTO useralpacainfo(user_id, apikey, apikeysecret)
+        VALUES($1, ' ', ' ')
+    `;
     try {
         // Using the pool to query the database
-        const rows = await pool.query(createLoginQuery, [username, hashedPassword]);
-        return rows[0]; // Returning the newly created user ID
+        const userResult = await pool.query(createLoginQuery, [username, hashedPassword]);
+        const userId = userResult.rows[0].id;
+        const r = await pool.query(createAlpacaAccountQuery, [userId]);
+        return userResult[0]; // Returning the newly created user ID
     } catch (error) {
         console.error('Error saving user to database:', error);
         throw error; // Rethrow the error or handle it as needed
@@ -332,15 +356,15 @@ const saveUserInfoToDatabase = async (userid, firstname, lastname, email) => {
     }
 };
 
-const saveUserAlpacaInfoToDatabase = async (userid, hashedapikey, hashedapikeysecret) => {
+const saveUserAlpacaInfoToDatabase = async (userid, apikey, apikeysecret) => {
     const createAccountQuery = `
-        UPDATE usersalpacainfo
-        SET hashedapikey = $2, hashedapikeysecret = $3
-        WHERE id = $1
+        UPDATE useralpacainfo
+        SET apikey = $2, apikeysecret = $3
+        WHERE user_id = $1
      `;
     try {
         // Using the pool to query the database
-        await pool.query(createAccountQuery, [userid, hashedapikey, hashedapikeysecret]);
+        await pool.query(createAccountQuery, [userid, apikey, apikeysecret]);
         //console.log('User info saved!');
         return;
     } catch (error) {
@@ -360,7 +384,7 @@ const getUserInfoFromDatabase = async (userId) => {
 }
 const getUserAlpacaInfoFromDatabase = async (userId) => {
     try {
-        const result = await pool.query('SELECT * FROM usersalpacainfo WHERE id = $1', [userId]);
+        const result = await pool.query('SELECT * FROM useralpacainfo WHERE user_id = $1', [userId]);
         return result.rows[0]; // Assuming the first row contains the user info
     } catch (error) {
         console.error('Database error in getUserAlpacaInfoFromDatabase:', error);
@@ -371,7 +395,7 @@ const getUserAlpacaInfoFromDatabase = async (userId) => {
 const deleteUserFromDatabase = async (userId) => {
     const deleteAccountQuery = `
         DELETE FROM users WHERE id = $1
-        DELETE FROM usersalpacainfo WHERE id = $1
+        DELETE FROM useralpacainfo WHERE user_id = $1
      `;
     try {
         const result = await pool.query(deleteAccountQuery, [userId]);

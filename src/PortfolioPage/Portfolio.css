@@ -167,15 +167,21 @@
     font-family: 'Arial Rounded MT', Arial;
     color: black;
 }
+.portfolio-account-buyingpower {
+    padding: 10px;
+    font-size: 1.8em;
+    font-family: 'Arial Rounded MT', Arial;
+    color: black;
+}
 .portfolio-details {
     flex: 9;
     display: flex;
     flex-direction: row;
 }
 .portfolio-alpaca-accinfo {
-    flex: 2; /* Don't grow or shrink */
+    flex: 4; /* Don't grow or shrink */
     width: 40%; /* Full width minus margin */
-    background-color: white;
+    background-color: mintcream;
     border-radius: 15px; /* Rounded corners */
     border: solid;
     border-width: 2px;
@@ -188,7 +194,7 @@
 .portfolio-alpaca-keyinfo {
     flex: 1; /* Don't grow or shrink */
     width: 40%; /* Full width minus margin */
-    background-color: lightyellow;
+    background-color: #FCD700;
     border-radius: 15px; /* Rounded corners */
     border: solid;
     border-width: 2px;
@@ -198,6 +204,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center; /* Center content vertically, if needed */
+    align-content: center;
 }
 .portfolio-key-form{
     padding: 20px 20px 0px 20px;
@@ -212,4 +219,16 @@
     padding: 20px;
     font-size: 0.6em;
     font-family: 'Arial Rounded MT', Arial;
+}
+.portfolio-alpaca-linked {
+    padding: 20px;
+    font-size: 2.5em;
+    font-family: 'Arial Rounded MT', Arial;
+    color: black;
+    align-content: center;
+    text-align: center;
+}
+
+.alpaca-logo{
+    width: 100%;
 }
